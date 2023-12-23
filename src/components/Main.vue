@@ -328,13 +328,15 @@ export default {
           if (this.activeProps.includes(property)) {
             let values = Object.values(props[property]);
             let approx = this.calculateAverage(values)
-            let series = this.chartSeries.find(series => series.name === property);
+            let series = this.chartSeries.find(series => series.name === property.replace(/([a-z])([A-Z])/g, '$1 $2')
+                .replace(/^./, (str) => str.toUpperCase()));
 
             if (series) {
               series.data.push(approx);
             } else {
               series = {
-                name: property,
+                name: property.replace(/([a-z])([A-Z])/g, '$1 $2')
+                    .replace(/^./, (str) => str.toUpperCase()),
                 data: [approx]
               };
 

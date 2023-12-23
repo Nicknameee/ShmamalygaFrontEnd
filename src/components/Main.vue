@@ -48,6 +48,16 @@
 
     <main class="container-fluid h-100 mb-3" v-if="this.mode === 'energyBalanceCalculation' && !this.dataLoading">
       <div class="row">
+        <h2 class="mb-4">Formulas List</h2>
+        <ul class="list-group">
+          <li v-for="(formula, index) in energy" :key="index" class="list-group-item">
+            {{ formula.name
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/^./, (str) => str.toUpperCase()) }} = SUM({{ formula.name
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/^./, (str) => str.toUpperCase()) }}[i]) where i from {{ years[0] }} to {{ years[years.length - 1] }} = {{ formula.sum }} {{ measurements[formula.name] }}
+          </li>
+        </ul>
       </div>
     </main>
 
@@ -62,7 +72,6 @@
         <Apexchart class="w-100" :options="chartOptions" :series="chartSeries" type="line" height="600"/>
       </div>
     </main>
-
 
     <main class="container-fluid h-100 mb-3" v-if="this.mode === 'energySavingPlan' && !this.dataLoading">
       <div class="row">
@@ -250,7 +259,8 @@ export default {
           categories: [],
         },
       },
-      chartSeries: []
+      chartSeries: [],
+      energy: []
     };
   },
   components: {
@@ -279,6 +289,7 @@ export default {
           .catch(error => {
             console.error("Error fetching data:", error);
           });
+
     await fetch("http://localhost:8080/api/v1/manager/measurement")
         .then(response => response.json())
         .then(data => {
@@ -289,7 +300,9 @@ export default {
           console.error("Error fetching data:", error);
           this.dataLoading = false;
         });
+
     this.chartOptions.xaxis.categories = Object.keys(this.data).slice().sort()
+    this.calculateEnergy();
   },
   methods: {
     updateFilteredData() {
@@ -335,9 +348,32 @@ export default {
       if (arr.length === 0) {
         return 0;
       }
-
       const sum = arr.reduce((acc, value) => acc + value, 0);
       return sum / arr.length;
+    },
+    calculateEnergy() {
+      Object.keys(this.data).forEach(key => {
+        let props = this.data[key];
+
+        Object.keys(props).forEach(property => {
+          if (property.includes('Consumption')) {
+            let values = Object.values(props[property]);
+            let sum = values.reduce((acc, value) => acc + value, 0);
+
+            let energyEntry = this.energy.find(entry => entry.name === property);
+            if (energyEntry) {
+              energyEntry.sum += sum;
+            } else {
+              energyEntry = {
+                name: property,
+                sum: sum
+              };
+
+              this.energy.push(energyEntry);
+            }
+          }
+        });
+      });
     }
   }
 };

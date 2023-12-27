@@ -1,8 +1,8 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div id="app">
-    <header class="container-fluid">
+    <header class="container-fluid sticky-top">
       <div class="row mb-3">
-        <select id="actions" class="form-control" data-style="btn-primary" data-size="5" v-model="mode">
+        <select id="actions" class="form-control" style="border-bottom: 10px solid aqua" data-style="btn-primary" data-size="6" v-model="mode">
           <option class="menu" value="stats">Stats</option>
           <option class="menu" value="energyBalanceCalculation">Energy Balance Calculation</option>
           <option class="menu" value="energyConsumptionLevel">Energy Consumption Level</option>
@@ -348,7 +348,7 @@
 
           <img v-bind:src="images[9]" class="img-thumbnail" alt="Thumbnail Image">
 
-          Аналіз міського бюджету показує його залежність від міжбюджетних трансфертів, їх доля в міському бюджеті складала від 33% у 2010 році до 45% у 2016 році. 
+          Аналіз міського бюджету показує його залежність від міжбюджетних трансфертів, їх доля в міському бюджеті складала від 33% у 2010 році до 45% у 2016 році
         </pre>
       </div>
     </main>

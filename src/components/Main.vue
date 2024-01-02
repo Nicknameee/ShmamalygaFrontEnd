@@ -2,13 +2,15 @@
   <div id="app">
     <header class="container-fluid sticky-top">
       <div class="row mb-3">
-        <select id="actions" class="form-control" style="border-bottom: 10px solid aqua" data-style="btn-primary" data-size="6" v-model="mode">
+        <select id="actions" class="form-control" style="border-bottom: 10px solid aqua" data-style="btn-primary"
+                data-size="6" v-model="mode">
           <option class="menu" value="stats">Stats</option>
           <option class="menu" value="energyBalanceCalculation">Energy Balance Calculation</option>
           <option class="menu" value="energyConsumptionLevel">Energy Consumption Level</option>
           <option class="menu" value="energySavingPlan">Energy Saving Plan</option>
           <option class="menu" value="recommendations">Recommendations</option>
           <option class="menu" value="report">Report</option>
+          <option class="menu" value="about">About City</option>
         </select>
       </div>
     </header>
@@ -33,12 +35,16 @@
           <table class="w-100">
             <tbody class="w-100">
             <tr v-for="(value) in filteredData" :key="value">
-              <td class="w-50" style="border-bottom: 3px solid black; border-right: 3px solid black">{{ value[0]
-                  .replace(/([a-z])([A-Z])/g, '$1 $2')
-                  .replace(/^./, (str) => str.toUpperCase()) }}
+              <td class="w-50" style="border-bottom: 3px solid black; border-right: 3px solid black">{{
+                  value[0]
+                      .replace(/([a-z])([A-Z])/g, '$1 $2')
+                      .replace(/^./, (str) => str.toUpperCase())
+                }}
               </td>
               <td class="w-25" style="border-bottom: 3px solid black;">{{ value[1] }}</td>
-              <td class="w-25" style="border-bottom: 3px solid black; border-right: 3px solid black">{{ measurements[value[0]] }}</td>
+              <td class="w-25" style="border-bottom: 3px solid black; border-right: 3px solid black">
+                {{ measurements[value[0]] }}
+              </td>
             </tr>
             </tbody>
           </table>
@@ -51,11 +57,16 @@
         <h2 class="mb-4">Formulas List</h2>
         <ul class="list-group">
           <li v-for="(formula, index) in energy" :key="index" class="list-group-item">
-            {{ formula.name
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/^./, (str) => str.toUpperCase()) }} = SUM({{ formula.name
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/^./, (str) => str.toUpperCase()) }}[i]) where i from {{ years[0] }} to {{ years[years.length - 1] }} = {{ formula.sum }} {{ measurements[formula.name] }}
+            {{
+              formula.name
+                  .replace(/([a-z])([A-Z])/g, '$1 $2')
+                  .replace(/^./, (str) => str.toUpperCase())
+            }} = SUM({{
+              formula.name
+                  .replace(/([a-z])([A-Z])/g, '$1 $2')
+                  .replace(/^./, (str) => str.toUpperCase())
+            }}[i]) where i from {{ years[0] }} to {{ years[years.length - 1] }} = {{ formula.sum }}
+            {{ measurements[formula.name] }}
           </li>
         </ul>
       </div>
@@ -64,10 +75,12 @@
     <main class="container-fluid h-100 mb-3" v-if="this.mode === 'energyConsumptionLevel' && !this.dataLoading">
       <div class="row">
         <label v-for="(prop, index) in props" :key="index" class="w-25">
-          <input type="checkbox" v-model="activeProps" :value="prop" @change="chart" />
-          {{ prop
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/^./, (str) => str.toUpperCase()) }}
+          <input type="checkbox" v-model="activeProps" :value="prop" @change="chart"/>
+          {{
+            prop
+                .replace(/([a-z])([A-Z])/g, '$1 $2')
+                .replace(/^./, (str) => str.toUpperCase())
+          }}
         </label>
         <Apexchart class="w-100" :options="chartOptions" :series="chartSeries" type="line" height="600"/>
       </div>
@@ -433,6 +446,46 @@
       </div>
     </main>
 
+    <main class="container-fluid h-100 mb-3" v-if="this.mode === 'about' && !this.dataLoading">
+      <div class="row">
+        <pre class="text">
+          Кривий Ріг — місто в Україні, у Дніпропетровській області, адміністративний центр Криворізького району та Криворізької міської громади. Сьоме за населенням та друге за площею місто України. Є найдовшим містом Європи: лінійна довжина міста (відстань між крайніми південною та північною точками на межі міста) становить 66,1 км. Розташований на березі річок Інгулець і Саксагань.
+
+<img v-bind:src="images[10]" class="img-thumbnail"/>
+
+
+
+	Місто знаходиться у зоні, котра характеризується вологим континентальним кліматом зі спекотним літом. Найтепліший місяць — липень із середньою температурою 27,8 °C (82.04 °F). Найхолодніший місяць — січень, із середньою температурою -6,3 °С (20.66 °F). Більша частина опадів випадає під час теплої половини року (квітень-жовтень) — 268 мм.
+
+	Станом на 01.12.2016 кількість населення складає 639876 осіб. Густота населення – 1 488 осіб/км². Динаміка зміни кількості населення м. Кривого Рогу
+за 2008– 2017 роки (тис. осіб):
+
+<img v-bind:src="images[11]" class="img-thumbnail"/>
+
+
+	Територія міста поділена на 7 районів: Інгулецький, Центрально-Міський,
+Металургійний, Довгинцівський, Саксаганський, Покровський та Тернівський.
+За адміністративно-територіальним устроєм до його складу входять 3 селища та
+2 села. Статистичний аналіз вказує на те, що населення Кривого Рогу поступово
+скорочується. Зменшення кількості населення пояснюється як природними, так
+і міграційними чинниками. Протягом останніх років смертність була вищою
+ніж народжуваність.
+
+	Кривий Ріг – центр багатогалузевого промислового вузла, у якому налічується близько 6 000 підприємств. Промисловий комплекс міста складається з 73 великих та середніх підприємств різних галузей: чорної металургії, машинобудівної, будматеріалів, хімічної, поліграфічної, деревообробної, легкої, харчової промисловості тощо. У Криворізькому басейні розташовано вісім з одинадцяти підприємств України з видобутку та переробки залізорудної сировини, а також підприємства з обслуговування основного виробництва.
+	Економічний потенціал міста представляють понад 12,6 тис. суб’єктів підприємницької діяльності – юридичних осіб та майже 78,5 тис. підприємців –
+фізичних осіб. Головною містоутворюючою галуззю, що визначає профіль міста, є чорна металургія.
+
+	Постачання газу здійснює ВАТ «Криворіжгаз», активна газифікація почалася 1957 року. Послуги водопостачання та водовідведення забезпечує «Кривбасводоканал». Джерелом водопостачання є річка Інгулець та міські водосховища, водогін почав працювати у 1928 році. Постачання електроенергії містянам здійснює Криворізька ТЕС (ВАТ «ДТЕК Дніпроенерго»).
+	Експлуатацію багатоквартирних житлових будинків та прибудинкових територій здійснює 45 комунальних підприємств («ЖЕКи»). Разом з цим, розповсюджені Об'єднання співвласників багатоквартирних будинків. Інші підприємства — «Кривбасстандартметрологія», «Криворіжтепломережа» (у місті 72 котельні та 383,8 км теплових мереж), ДП «Криворізька теплоцентраль», «Екоспецтранс», «Міськліфт», у місті запроваджена єдина автоматизована міська система комунальних розрахунків «НОВА-КОМ». У Кривому Розі розташовано 68 поштових відділень.
+	Криворізька ТЕС — найбільша електростанція області. Одна з найбільших теплових електростанцій України. Криворізька ТЕС розташована за 20 км на захід від міста Апостолове і за 2 км від Зеленодольська. Станція забезпечує електроенергією свій регіон.
+	Технічні характеристики: Проєктна потужність — 2400 МВт. Енергетичне устаткування станції: 10 блоків по 282 МВт, із котлами П-50 — 4 блоки, із котлами ТАП-210А — 6 блоків, турбінами: К-300-240-2, К-300-240.
+	Із введенням енергоблока № 8 Криворізька ТЕС досягла проєктної потужності 2400 МВт і стала першою блоковою тепловою електростанцією на твердому паливі, побудованою за типовим проєктом з енергоблоками 300 МВт. Саме Криворізька ТЕС стала полігоном для випробування і впровадження типових схем освоєння й експлуатації устаткування, ведення режимів експлуатації.
+	Проєктне паливо — рядове вугілля, резервне — мазут і газ. Електрична енергія подається з напругою 150 і 330 кВ із відкритих розподільних пристроїв.
+
+
+        </pre>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -449,6 +502,8 @@ const heatImage = require('@/resources/heat.png')
 const energyImage = require('@/resources/energy.png')
 const consumerImage = require('@/resources/consumer.png')
 const compressImage = require('@/resources/compress.png')
+const apmImage = require('@/resources/apm.png')
+const jabriceImage = require('@/resources/jabrice.png')
 
 export default {
   name: "App",
@@ -475,7 +530,7 @@ export default {
       },
       chartSeries: [],
       energy: [],
-      images: [structureImage, fuelImage, gasImage, diagramImage, coalImage, aquaImage, heatImage , energyImage, consumerImage, compressImage]
+      images: [structureImage, fuelImage, gasImage, diagramImage, coalImage, aquaImage, heatImage, energyImage, consumerImage, compressImage, apmImage, jabriceImage]
     };
   },
   components: {
@@ -490,20 +545,20 @@ export default {
   },
   async beforeCreate() {
     await fetch("http://localhost:8080/api/v1/manager/data")
-          .then(response => response.json())
-          .then(data => {
-            this.data = data;
-            this.filteredData = this.data;
-            this.years = Object.keys(this.data).slice().sort()
-            this.months = Object.keys(this.data[this.years[0]][Object.keys(this.data[this.years[0]])[0]]).slice().sort();
-            this.year = this.years[0]
-            this.month = this.months[0]
-            this.updateFilteredData()
-            this.props = Object.keys(this.data[this.year])
-          })
-          .catch(error => {
-            console.error("Error fetching data:", error);
-          });
+        .then(response => response.json())
+        .then(data => {
+          this.data = data;
+          this.filteredData = this.data;
+          this.years = Object.keys(this.data).slice().sort()
+          this.months = Object.keys(this.data[this.years[0]][Object.keys(this.data[this.years[0]])[0]]).slice().sort();
+          this.year = this.years[0]
+          this.month = this.months[0]
+          this.updateFilteredData()
+          this.props = Object.keys(this.data[this.year])
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
 
     await fetch("http://localhost:8080/api/v1/manager/measurement")
         .then(response => response.json())

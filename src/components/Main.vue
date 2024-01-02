@@ -516,7 +516,7 @@ export default {
       years: [],
       months: [],
       filteredData: null,
-      mode: 'stats',
+      mode: 'about',
       measurements: [],
       props: [],
       activeProps: [],

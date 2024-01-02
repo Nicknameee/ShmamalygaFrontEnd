@@ -504,7 +504,7 @@ const consumerImage = require('@/resources/consumer.png')
 const compressImage = require('@/resources/compress.png')
 const apmImage = require('@/resources/apm.png')
 const jabriceImage = require('@/resources/jabrice.png')
-
+//This project is shit
 export default {
   name: "App",
   data() {
